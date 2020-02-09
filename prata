@@ -1,0 +1,174 @@
+Sub Gera_Etiquetas()
+    i = 2
+    etiquetas = 0
+    Worksheets("Saida_Etiquetas").Cells.ClearContents
+    soma = 0
+    Do While Worksheets("Etiquetas").Cells(i, 1) <> ""
+        tipo = Worksheets("Etiquetas").Cells(i, 1)
+        codigo = Worksheets("Etiquetas").Cells(i, 2)
+        qtde = CInt(Worksheets("Etiquetas").Cells(i, 3))
+        
+             
+        j = 2
+        Do While Worksheets("Etiquetas").Cells(i, 2) <> Worksheets(tipo).Cells(j, 1) And Worksheets(tipo).Cells(j, 1) <> ""
+            j = j + 1
+        Loop
+        preco = CInt(Worksheets(tipo).Cells(j, 2))
+        
+        
+        For k = 1 To qtde Step 1
+            saida = ""
+            If codigo < 10 Then
+                saida = tipo & " 00" & codigo & vbNewLine & "R$ " & preco & ",00"
+            ElseIf codigo < 100 Then
+                saida = tipo & " 0" & codigo & vbNewLine & "R$ " & preco & ",00"
+            Else
+                saida = tipo & " " & codigo & vbNewLine & "R$ " & preco & ",00"
+            End If
+            
+            Worksheets("Saida_Etiquetas").Cells((etiquetas \ 5) + 1, (etiquetas Mod 5) + 1) = saida
+            etiquetas = etiquetas + 1
+        Next
+        soma = soma + qtde
+        i = i + 1
+    Loop
+    MsgBox "Quantidade de Etiquetas: " & soma
+    Sheets("Saida_Etiquetas").Select
+End Sub
+
+Sub Limpa_Tudo()
+    confirmacao = MsgBox("Você tem certeza que deseja apagar tudo?", vbYesNo)
+    If confirmacao = vbYes Then
+        coluna = 1
+        Do While coluna < 11
+            linha = 7
+            Do While linha < 75
+                Cells(linha, coluna) = ""
+                linha = linha + 1
+            Loop
+            coluna = coluna + 1
+        Loop
+    End If
+End Sub
+
+
+Sub Preenche_com_Precos()
+     
+    linha_qtd_mercadoria = 7
+    '------------------------------------------------------------------
+    'PREENCHE BRINCOS
+    '------------------------------------------------------------------
+    coluna = 1
+    i = 7
+    Do While Cells(i, coluna) <> ""
+        j = 2
+        Do While Cells(i, coluna) <> Worksheets("BR").Cells(j, 1) And Worksheets("BR").Cells(j, 1) <> ""
+            j = j + 1
+        Loop
+        
+        Cells(i, coluna + 1) = Worksheets("BR").Cells(j, 2) & ",00"
+        i = i + 1
+    Loop
+    
+    If i > linha_qtd_mercadoria Then
+        linha_qtd_mercadoria = i
+    End If
+    q_br = i - 7
+    
+    '------------------------------------------------------------------
+    'PREENCHE ANEIS
+    '------------------------------------------------------------------
+    coluna = 3
+    i = 7
+    Do While Cells(i, coluna) <> ""
+        j = 2
+        Do While Cells(i, coluna) <> Worksheets("AN").Cells(j, 1) And Worksheets("AN").Cells(j, 1) <> ""
+            j = j + 1
+        Loop
+        
+        Cells(i, coluna + 1) = Worksheets("AN").Cells(j, 2) & ",00"
+        i = i + 1
+    Loop
+    
+    If i > linha_qtd_mercadoria Then
+        linha_qtd_mercadoria = i
+    End If
+    q_an = i - 7
+    
+    '------------------------------------------------------------------
+    'PREENCHE PINGENTES
+    '------------------------------------------------------------------
+    coluna = 5
+    i = 7
+    Do While Cells(i, coluna) <> ""
+        j = 2
+        Do While Cells(i, coluna) <> Worksheets("PG").Cells(j, 1) And Worksheets("PG").Cells(j, 1) <> ""
+            j = j + 1
+        Loop
+        
+        Cells(i, coluna + 1) = Worksheets("PG").Cells(j, 2) & ",00"
+        i = i + 1
+    Loop
+    
+    If i > linha_qtd_mercadoria Then
+        linha_qtd_mercadoria = i
+    End If
+    q_pg = i - 7
+    
+    '------------------------------------------------------------------
+    'PREENCHE CORRENTES
+    '------------------------------------------------------------------
+    coluna = 7
+    i = 7
+    Do While Cells(i, coluna) <> ""
+        j = 2
+        Do While Cells(i, coluna) <> Worksheets("CR").Cells(j, 1) And Worksheets("CR").Cells(j, 1) <> ""
+            j = j + 1
+        Loop
+        
+        Cells(i, coluna + 1) = Worksheets("CR").Cells(j, 2) & ",00"
+        i = i + 1
+    Loop
+    
+    If i > linha_qtd_mercadoria Then
+        linha_qtd_mercadoria = i
+    End If
+    q_cr = i - 7
+    
+    '------------------------------------------------------------------
+    'PREENCHE PULSEIRAS
+    '------------------------------------------------------------------
+    coluna = 9
+    i = 7
+    Do While Cells(i, coluna) <> ""
+        j = 2
+        Do While Cells(i, coluna) <> Worksheets("PS").Cells(j, 1) And Worksheets("PS").Cells(j, 1) <> ""
+            j = j + 1
+        Loop
+        
+        Cells(i, coluna + 1) = Worksheets("PS").Cells(j, 2) & ",00"
+        i = i + 1
+    Loop
+    
+    If i > linha_qtd_mercadoria Then
+        linha_qtd_mercadoria = i
+    End If
+    q_ps = i - 7
+    
+    
+    '------------------------------------------------------------------
+    'PREENCHE QUANTIDADE DE MERCADORIAS
+    '------------------------------------------------------------------
+    linha_qtd_mercadoria = linha_qtd_mercadoria + 2
+    
+    For i = 1 To 10 Step 2
+        Cells(linha_qtd_mercadoria, i) = "Mercadorias"
+    Next i
+    
+    Cells(linha_qtd_mercadoria, 2) = q_br
+    Cells(linha_qtd_mercadoria, 4) = q_an
+    Cells(linha_qtd_mercadoria, 6) = q_pg
+    Cells(linha_qtd_mercadoria, 8) = q_cr
+    Cells(linha_qtd_mercadoria, 10) = q_ps
+    
+End Sub
